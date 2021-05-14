@@ -81,6 +81,6 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         $category = Category::findOrFail($id)->delete();
-        return back()->with('info', 'Categoría borrada con éxito');
+        return back()->with('info', 'Categoría eliminada con éxito');
     }
 }

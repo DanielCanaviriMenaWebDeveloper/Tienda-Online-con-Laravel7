@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::resource('admin/categories', 'CategoryController')->names('categories');
+Route::resource('admin/subcategories', 'SubcategoryController')->names('subcategories');
+
 
 Route::get('admin/category/{module}', 'CategoryController@module')->name('categories.module');
 
