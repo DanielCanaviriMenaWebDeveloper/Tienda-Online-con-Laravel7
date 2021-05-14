@@ -19,7 +19,7 @@ class SubcategoryController extends Controller
     public function create()
     {
         $categories = Category::orderBy('name', 'ASC')->pluck('name', 'id');
-        dd($categories); 
+        /* dd($categories);  */
         return view('admin.subcategories.create', compact('categories'));
     }
 
