@@ -2,84 +2,78 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class TagController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        $tags = Tag::orderBy('id',  'DESC')->paginate(15);
+        return view('admin.tags.index', compact('tags'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        $categories = Category::orderBy('name', 'ASC')->pluck('name', 'id');
+        return view('admin.tags.create', compact('categories'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        /* https://laravel.com/docs/7.x/validation */
+        $request->validate([
+            'name'=>'required| unique:tags| max:20',
+        ]);
+
+        $tag = new Tag;
+        $tag->name = e($request->name);
+        $tag->slug = Str::slug($request->name);
+        $tag->category_id=e($request->category_id);
+        $tag->save();
+        return redirect()->route('tags.index')->with('info', 'Etiqueta creada correctamente');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Tag  $tag
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Tag $tag)
+    /* public function module($module)
+    {
+        $tags = Tag::where('module', $module)->orderBy('id',  'DESC')->paginate(15);
+        return view('admin.tags.index', compact('tags'));
+    } */
+    
+    public function show(Category $category)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Tag  $tag
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Tag $tag)
+    public function edit($id)
     {
-        //
+        $tag = Tag::where('id', $id)->firstOrFail();
+        $categories = Category::orderBy('name', 'ASC')->pluck('name', 'id');
+        return view('admin.tags.edit', compact('tag', 'categories'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Tag  $tag
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Tag $tag)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'name'=>'required| max:20',
+        ]);
+
+        $tag = Tag::findOrFail($id);
+
+        $tag->name = e($request->name);
+        $tag->slug = Str::slug($request->name);
+        $tag->category_id=e($request->category_id);
+        $tag->save();
+
+        return redirect()->route('tags.index')->with('info', 'Etiqueta actualizada correctamente');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Tag  $tag
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Tag $tag)
+    public function destroy($id)
     {
-        //
+        $tag = Tag::findOrFail($id)->delete();
+        return back()->with('info', 'Etiqueta eliminada con éxito');
     }
 }

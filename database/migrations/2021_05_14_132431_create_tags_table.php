@@ -16,9 +16,11 @@ class CreateTagsTable extends Migration
         Schema::create('tags', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('module');
             $table->string('slug');
-            
+
+            $table->unsignedBigInteger('category_id');
+            $table->foreign('category_id')->references('id')->on('categories');
+
             $table->softDeletes();
             $table->timestamps();
         });
