@@ -2,84 +2,113 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        $posts = Post::orderBy('id',  'DESC')->paginate(15);
+        return view('admin.posts.index', compact('posts'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        $categories = Category::orderBy('name', 'ASC')->pluck('name', 'id');
+        return view('admin.posts.create', compact('categories'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name'=>'required| unique:posts| max:60',
+            'slug'=>'required| unique:posts| max:60',
+            'abstract'=>'required| max:500',
+            'body'=>'required',
+            'status'=>'required',
+            'user_id'=>'required| integer',
+            'category_id'=>'required| integer',
+            'image'=> 'required|image|dimensions:min_width=1200, max-width=1200, min-height=490, max-height=490|mimes:jpeg,jpg,png'
+        ]);
+        
+        if($request->hasFile('image')) {
+            $image = $request->file('image');
+            $nombre = time().$image->getClientOriginalName();
+            $ruta = public_path().'/images';
+            $image->move($ruta, $nombre);
+            $urlimage = '/images/'.$nombre;
+        }
+
+        $post = new Post;
+        
+        $post->name = e($request->name);
+        $post->slug = Str::slug($request->name);
+        $post->abstract = e($request->abstract);
+        $post->body = e($request->body);
+        $post->status = e($request->status);
+        $post->user_id=e($request->user_id);
+        $post->category_id=e($request->category_id);
+        $post->save();
+        $post->image()->create($urlimage);
+        return redirect()->route('posts.index')->with('info', 'Publicación creada correctamente');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Post  $post
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Post $post)
+    public function show(Subcategory $subcategory)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Post  $post
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Post $post)
+    public function edit($id)
     {
-        //
+        $post = Post::where('id', $id)->firstOrFail();
+        $categories = Category::orderBy('name', 'ASC')->pluck('name', 'id');
+        return view('admin.posts.edit', compact('post', 'categories'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Post  $post
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Post $post)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'name'=>'required| max:60',
+            'slug'=>'required| max:60',
+            'abstract'=>'required| max:500',
+            'body'=>'required',
+            'status'=>'required',
+            'user_id'=>'required| integer',
+            'category_id'=>'required| integer',
+            'image'=> 'required|image|dimensions:min_width=1200, max-width=1200, min-height=490, max-height=490|mimes:jpeg,jpg,png'
+        ]);
+        
+        if($request->hasFile('image')) {
+            $image = $request->file('image');
+            $nombre = time().$image->getClientOriginalName();
+            $ruta = public_path().'/images';
+            $image->move($ruta, $nombre);
+            $urlimage = '/images/'.$nombre;
+        }
+
+        $post = Post::findOrFail($id);
+
+        $post->name = e($request->name);
+        $post->slug = Str::slug($request->name);
+        $post->abstract = e($request->abstract);
+        $post->body = e($request->body);
+        $post->status = e($request->status);
+        $post->user_id=e($request->user_id);
+        $post->category_id=e($request->category_id);
+        $post->save();
+
+        $post->image()->create($urlimage);
+
+        return redirect()->route('post.index')->with('info', 'Publicación actualizada correctamente');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Post  $post
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Post $post)
+    public function destroy($id)
     {
-        //
+        $post = Post::findOrFail($id)->delete();
+        return back()->with('info', 'Publicación eliminada con éxito');
     }
 }
