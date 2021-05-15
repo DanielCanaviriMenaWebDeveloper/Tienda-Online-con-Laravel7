@@ -10,6 +10,9 @@ use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
+    public function __construct() {
+        $this->middleware('auth');
+    }
     public function index()
     {
         $posts = Post::orderBy('id',  'DESC')->paginate(15);
@@ -26,7 +29,6 @@ class PostController extends Controller
     {
         $request->validate([
             'name'=>'required| unique:posts| max:60',
-            'slug'=>'required| unique:posts| max:60',
             'abstract'=>'required| max:500',
             'body'=>'required',
             'status'=>'required',
@@ -34,13 +36,13 @@ class PostController extends Controller
             'category_id'=>'required| integer',
             'image'=> 'required|image|dimensions:min_width=1200, max-width=1200, min-height=490, max-height=490|mimes:jpeg,jpg,png'
         ]);
-        
+        /* $urlimage = []; */
         if($request->hasFile('image')) {
             $image = $request->file('image');
             $nombre = time().$image->getClientOriginalName();
             $ruta = public_path().'/images';
             $image->move($ruta, $nombre);
-            $urlimage = '/images/'.$nombre;
+            $urlimage['url'] = '/images/'.$nombre;
         }
 
         $post = new Post;
@@ -73,7 +75,6 @@ class PostController extends Controller
     {
         $request->validate([
             'name'=>'required| max:60',
-            'slug'=>'required| max:60',
             'abstract'=>'required| max:500',
             'body'=>'required',
             'status'=>'required',

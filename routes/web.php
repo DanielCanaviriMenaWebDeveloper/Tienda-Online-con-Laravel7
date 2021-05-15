@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 Route::resource('admin/categories', 'CategoryController')->names('categories');
 Route::resource('admin/subcategories', 'SubcategoryController')->names('subcategories');
 Route::resource('admin/tags', 'TagController')->names('tags');
+Route::resource('admin/posts', 'PostController')->names('posts');
 
 
 Route::get('admin/category/{module}', 'CategoryController@module')->name('categories.module');
