@@ -23,6 +23,7 @@ class PostController extends Controller
     {
         /* Solo obtendra las categorias cuyo modulo sea igual a  '1' => 'Blog' */
         $categories = Category::where('module', 1)->orderBy('name', 'ASC')->pluck('name', 'id');
+        /* dd($categories); */
         return view('admin.posts.create', compact('categories'));
     }
 
