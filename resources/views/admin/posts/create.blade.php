@@ -12,7 +12,7 @@
 @section('content')
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Registro de Publicaciones</h3>
+            <h3 class="card-title">Registro de Publicación</h3>
         </div><!-- Close card-header -->
 
         <!-- Código de Laravel colective que envia el formulário a la ruta especificada mediante el método POST, incluye envío de archivos. -->

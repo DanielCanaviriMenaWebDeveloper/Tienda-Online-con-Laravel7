@@ -36,6 +36,7 @@ class PostController extends Controller
             'category_id'=>'required| integer',
             'image'=> 'required|image|dimensions:min_width=1200, max-width=1200, min-height=490, max-height=490|mimes:jpeg,jpg,png'
         ]);
+        
         /* $urlimage = []; */
         if($request->hasFile('image')) {
             $image = $request->file('image');
@@ -88,7 +89,7 @@ class PostController extends Controller
             $nombre = time().$image->getClientOriginalName();
             $ruta = public_path().'/images';
             $image->move($ruta, $nombre);
-            $urlimage = '/images/'.$nombre;
+            $urlimage['url'] = '/images/'.$nombre;
         }
 
         $post = Post::findOrFail($id);
@@ -100,11 +101,17 @@ class PostController extends Controller
         $post->status = e($request->status);
         $post->user_id=e($request->user_id);
         $post->category_id=e($request->category_id);
+        
+        if($request->hasFile('image')) {
+            $post->image()->delete();  
+        }
+
         $post->save();
-
-        $post->image()->create($urlimage);
-
-        return redirect()->route('post.index')->with('info', 'Publicación actualizada correctamente');
+        if($request->hasFile('image')) {
+            $post->image()->create($urlimage);
+        }
+        
+        return redirect()->route('posts.index')->with('info', 'Publicación actualizada correctamente');
     }
 
     public function destroy($id)

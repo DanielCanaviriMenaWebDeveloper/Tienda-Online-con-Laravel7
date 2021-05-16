@@ -249,6 +249,32 @@
                             </ul>
                         </li>
 
+                        {{-- Publicaciones --}}
+                        <li class="nav-item has-treeview">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-th-list"></i>
+                                <p>
+                                    Publicaciones
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{route('posts.create')}}" class="nav-link">
+                                        <i class="far fas fa-plus nav-icon"></i>
+                                        <p>Crear</p>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="{{route('posts.index')}}" class="nav-link">
+                                        <i class="far fas fa-list-ol nav-icon"></i>
+                                        <p>Lista</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
                         {{-- Programas   --}}
                         
                         {{-- <li class="nav-item has-treeview">
