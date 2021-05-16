@@ -21,7 +21,8 @@ class PostController extends Controller
 
     public function create()
     {
-        $categories = Category::orderBy('name', 'ASC')->pluck('name', 'id');
+        /* Solo obtendra las categorias cuyo modulo sea igual a  '1' => 'Blog' */
+        $categories = Category::where('module', 1)->orderBy('name', 'ASC')->pluck('name', 'id');
         return view('admin.posts.create', compact('categories'));
     }
 
@@ -60,15 +61,18 @@ class PostController extends Controller
         return redirect()->route('posts.index')->with('info', 'Publicación creada correctamente');
     }
 
-    public function show(Subcategory $subcategory)
+    public function show($id)
     {
-        //
+        
+        $post = Post::where('id', $id)->with('category', 'user', 'image')->firstOrFail();
+        /* dd($post); */
+        return view('admin.posts.show', compact('post'));
     }
 
     public function edit($id)
     {
         $post = Post::where('id', $id)->firstOrFail();
-        $categories = Category::orderBy('name', 'ASC')->pluck('name', 'id');
+        $categories = Category::where('module', 1)->orderBy('name', 'ASC')->pluck('name', 'id');
         return view('admin.posts.edit', compact('post', 'categories'));
     }
 
@@ -81,7 +85,7 @@ class PostController extends Controller
             'status'=>'required',
             'user_id'=>'required| integer',
             'category_id'=>'required| integer',
-            'image'=> 'required|image|dimensions:min_width=1200, max-width=1200, min-height=490, max-height=490|mimes:jpeg,jpg,png'
+            'image'=> 'image|dimensions:min_width=1200, max-width=1200, min-height=490, max-height=490|mimes:jpeg,jpg,png'
         ]);
         
         if($request->hasFile('image')) {

@@ -20,18 +20,22 @@ class Post extends Model
 
     protected $dates = ['deleted_at'];
 
+    /* Indica que se oculte la fecha de creación y fecha de actualización. */
+    /* protected $hidden = ['created_at', 'updated_at']; */
+
     /* Relación con Imagenes de 1 a 1 */
     public function image(){
         return $this->morphOne('App\Image', 'imageable');
     }
 
-    /* public function user(){
+    public function user(){
         return $this->belongsTo(User::class);
-    }  */
+    } 
 
-    /* public function category(){
+    /* Pertenece a una Categoria */
+    public function category() {
         return $this->belongsTo(Category::class);
-    } */ 
+    }
 
     /* public function commests(){
         return $this->hasMany(Commet::class);

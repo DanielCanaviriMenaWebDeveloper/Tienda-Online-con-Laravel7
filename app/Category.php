@@ -16,6 +16,11 @@ class Category extends Model
         return $this->hasMany(Subcategory::class);
     }
 
+    /* Tiene muchos Posts */
+    public function posts() {
+        return $this->hasMany(Post::class);
+    }
+
     public function tags() {
         return $this->hasMany(Tag::class);
     }
