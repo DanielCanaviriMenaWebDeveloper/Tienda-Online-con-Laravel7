@@ -37,7 +37,8 @@ class Post extends Model
         return $this->belongsTo(Category::class);
     }
 
-    /* public function commests(){
+    /* Tiene muchos Comentarios */
+    public function commests() {
         return $this->hasMany(Commet::class);
-    } */
+    }
 }

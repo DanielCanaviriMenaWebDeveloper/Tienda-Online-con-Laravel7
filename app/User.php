@@ -23,6 +23,13 @@ class User extends Authenticatable
         return $this->hasMany(Post::class);
     }
 
+    /* De la misma forma a partir de un Usuario poder encontrar todos 
+    los comentarios no esta contemplado en el sistema. */
+    /* Tiene muchos Comentarios*/
+    /* public function commets() {
+        return $this->hasMany(Commet::class);
+    } */
+
     /**
      * The attributes that should be hidden for arrays.
      *
