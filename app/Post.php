@@ -39,6 +39,7 @@ class Post extends Model
 
     /* Tiene muchos Comentarios */
     public function commests() {
-        return $this->hasMany(Commet::class);
+        /* Sintaxis que se usa cuando estamos vinvulando un modelo con una tabla polimorfica. */
+        return $this->morphMany(Commet::class, 'commentable')->whereNull('parent_id');
     }
 }

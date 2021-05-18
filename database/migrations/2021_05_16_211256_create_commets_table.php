@@ -18,11 +18,12 @@ class CreateCommetsTable extends Migration
             $table->text('body');
             $table->enum('status', ['PUBLISHED', 'DRAFT'])->default('DRAFT');
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('post_id');
-            $table->unsignedBigInteger('parent_id');
-            
+            /* $table->unsignedBigInteger('post_id'); */
+            $table->unsignedBigInteger('parent_id')->nullable();
+            $table->unsignedBigInteger('commentable_id');
+            $table->string('commentable_type');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('post_id')->references('id')->on('posts');
+            /* $table->foreign('post_id')->references('id')->on('posts'); */
 
             $table->timestamps();
         });

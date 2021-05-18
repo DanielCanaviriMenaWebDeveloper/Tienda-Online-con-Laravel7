@@ -6,13 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Commet extends Model
 {
-    protected $fillable = [
+   /*  protected $fillable = [
         'body',
         'status',
         'user_id',
         'post_id',
         'parent_id'
-    ];
+    ]; */
+
+    /* Sintaxis opcional a $fillable */
+    protected $guarded = [];
     
     /* Esta relación no es nesesaria ya que no nesecitamos saber 
     de un Post a partir de un Comentario, pero si saber de un Comentario
@@ -29,7 +32,7 @@ class Commet extends Model
     }
 
     /* Tiene muchas respuestas(Comentarios) */
-    public function answers() {
+    public function replies() {
         return $this->hasMany(Commet::class, 'parent_id');
     }
 }

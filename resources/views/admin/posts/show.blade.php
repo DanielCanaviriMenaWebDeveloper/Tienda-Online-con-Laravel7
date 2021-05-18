@@ -64,6 +64,54 @@
                     </div>
                 </div>
             </div>
+
+            {{-- Comments Form --}}
+            <div class="card" my-4>
+                <h5 class="card-header">Leave a Comment:</h5>
+                <div class="card-body">
+                    <form>
+                        <div class="form-group">
+                            <textarea rows="3" class="form-control"></textarea>
+                        </div>
+                        <button  type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+
+            {{-- Single Comment --}}
+            <div class="media mb-4">
+                <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+                <div class="media-body">
+                    <h5 class="mt-0">Commenter Name</h5>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat harum aliquid quas, omnis necessitatibus porro error atque voluptatum voluptatem asperiores magnam reiciendis hic et, consectetur iusto deserunt mollitia odit itaque!
+                </div>
+            </div>
+            
+            {{-- Comment with nested comments --}}
+            <div class="media mb-4">
+                <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+                <div class="media-body">
+                    <h5 class="mt-0">Commenter Name</h5>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iure quis facilis tempore ab laborum impedit eveniet sint similique odio ullam, ad tempora perferendis iste nisi, laudantium voluptate fugit iusto quidem!</p>
+
+                    <div class="media mb-4">
+                        <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+                        <div class="media-body">
+                            <h5 class="mt-0">Commenter Name</h5>
+                            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Molestias voluptatibus non nostrum nulla, quibusdam vel incidunt, eaque necessitatibus, velit tempora quis explicabo! Veniam iusto quibusdam tempora facilis nulla unde id.</p>
+                        </div>
+                    </div>
+
+                    <div class="media mb-4">
+                        <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+                        <div class="media-body">
+                            <h5 class="mt-0">Commenter Name</h5>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum odit eos aspernatur doloremque pariatur consequatur, dolores sapiente, minima repellat officiis quidem voluptate animi laboriosam a eligendi velit nostrum sit! Iusto?</p> 
+                        </div>
+                    </div>
+
+                </div>
+            </div>{{-- Close - Comment  --}}
         </div>
         {{-- /.card-body --}}
 
